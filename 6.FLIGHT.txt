@@ -1,0 +1,69 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <map>
+#include <set>
+using namespace std;
+// Define a structure to represent a flight between cities
+struct Flight {
+string destination;
+int cost;
+Flight(const string& dest, int c) : destination(dest), cost(c) {}
+};
+// Define a class to represent the graph of flight paths between cities
+class FlightGraph {
+private:
+map<string, vector<Flight>> adjacencyList;
+public:
+// Function to add a flight path between two cities
+void addFlight(const string& source, const string& destination, int cost) {
+adjacencyList[source].emplace_back(destination, cost);
+adjacencyList[destination].emplace_back(source, cost); // Assuming flights are bidirectional
+
+}
+// Function to check whether the graph is connected or not
+bool isConnected() {
+if (adjacencyList.empty()) {
+return false; // Graph is not connected if there are no nodes
+}
+set<string> visited;
+queue<string> q;
+// Start BFS traversal from any city
+q.push(adjacencyList.begin()->first);
+visited.insert(adjacencyList.begin()->first);
+// Continue BFS traversal until all reachable cities are visited
+while (!q.empty()) {
+string current = q.front();
+q.pop();
+for (const Flight& flight : adjacencyList[current]) {
+if (visited.find(flight.destination) == visited.end()) {
+visited.insert(flight.destination);
+q.push(flight.destination);
+}
+}
+}
+// Check if all cities are visited
+return visited.size() == adjacencyList.size();
+}
+};
+int main() {
+// Constructing the flight graph based on user input
+FlightGraph flightGraph;
+int numFlights;
+cout << "Enter the number of flight paths: ";
+cin >> numFlights;
+for (int i = 0; i < numFlights; ++i) {
+string source, destination;
+int cost;
+cout << "Enter source city, destination city, and cost: ";
+cin >> source >> destination >> cost;
+flightGraph.addFlight(source, destination, cost);
+}
+// Checking whether the graph is connected or not
+if (flightGraph.isConnected()) {
+cout << "The flight graph is connected." << endl;
+} else {
+cout << "The flight graph is not connected." << endl;
+}
+return 0;
+}

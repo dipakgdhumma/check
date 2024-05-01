@@ -1,0 +1,40 @@
+#include <iostream>
+#include <queue>
+#include <string>
+using namespace std;
+// Structure to represent a patient
+struct Patient {
+string name;
+int priority; // 0: General Checkup, 1: Non-Serious, 2: Serious
+// Constructor
+Patient(const string& n, int p) : name(n), priority(p) {}
+// Overload operator for comparison
+bool operator<(const Patient& other) const {
+// Higher priority patients have lower priority values
+return priority > other.priority;
+}
+};
+int main() {
+// Priority queue to store patients
+priority_queue<Patient> patientQueue;
+// Add patients to the queue
+patientQueue.push(Patient("John", 1)); // Non-Serious
+patientQueue.push(Patient("Alice", 2)); // Serious
+patientQueue.push(Patient("Bob", 0)); // General Checkup
+patientQueue.push(Patient("Emma", 2)); // Serious
+patientQueue.push(Patient("Michael", 1));// Non-Serious
+// Cater services to patients based on their priority
+cout << "Patients being catered services:" << endl;
+while (!patientQueue.empty()) {
+Patient currentPatient = patientQueue.top();
+patientQueue.pop();
+// Output patient's name and priority
+cout << "Name: " << currentPatient.name << ", Priority: ";
+switch (currentPatient.priority) {
+case 0: cout << "General Checkup" << endl; break;
+case 1: cout << "Non-Serious" << endl; break;
+case 2: cout << "Serious" << endl; break;
+}
+}
+return 0;
+}

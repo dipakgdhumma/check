@@ -1,0 +1,76 @@
+size=int(input("enter the size of table: "))
+array1=[]
+array2=[]
+
+for i in range(size):
+    array1.append(None)
+    array2.append(None)
+
+def linearProbing(data):
+    i=0
+    count=1
+    value=(data['telephone']+i)%size
+    while array1[value]!=None :
+       value=(data['telephone']+i)%size
+       i+=1
+       count+=1
+    array1[value]=data
+    linearResult();
+    print("number of comparisons in linear probing: ", count)
+
+def quadProbing(data):
+    i=0
+    count=1
+    value=(data['telephone']+i*i)%size
+    while array2[value]!=None :
+       value=(data['telephone']+i*i)%size
+       i+=1
+       count+=1
+    array2[value]=data
+    quadResult();
+    print("number of comparisons in quadratic probing: ", count)
+
+def linearResult():
+    print(array1)
+
+def quadResult():
+    print(array2)
+
+def linearSearch(name):
+    i=0
+    count=1
+    for entry in array1:
+        if entry is not None and entry['name']==name:
+            print(f"telephone number found for {name}  in linear probing is {entry['telephone']}")
+            print("number of comparisons in linear probing: ", count)
+            return 
+        count+=1
+    print(f"No telephone number found for {name}  in linear probing")
+    print("number of comparisons  in linear probing: ", count)
+
+def quadSearch(name):
+    i=0
+    count=1
+    for entry in array2:
+        if entry is not None and entry['name']==name:
+            print(f"telephone number found for {name}  in quadratic probing is {entry['telephone']}")
+            print("number of comparisons in quadratic probing: ", count)
+            return 
+        count+=1
+    print(f"No telephone number found for {name}  in quadratic probing")
+    print("number of comparisons in quadratic probing: ", count)
+
+while(True):
+    print("1. insert and 2. search")
+    choice=int(input("Enter your choice: "))
+    if (choice == 1):
+        data1={
+            'name':input("Enter the person's name: "),
+            'telephone':int(input("Enter telephone number: "))
+        }
+        linearProbing(data1)
+        quadProbing(data1)
+    if(choice==2):
+        name= input("enter the name to search:")
+        linearSearch(name)
+        quadSearch(name)
