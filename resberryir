@@ -1,0 +1,25 @@
+#IR Sensor + Buzzer with Raspberry Pi
+
+import RPi.GPIO as GPIO
+import time
+from datetime import datetime
+sensor =12
+buzzer =17
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(sensor, GPIO.IN)
+GPIO.setup(buzzer, GPIO.OUT)
+GPIO.output (buzzer, False)
+print("IR Sensor ready")
+
+try:
+    while True:
+        if GPIO.input (sensor):
+            GPIO.output (buzzer, True)
+            print(datetime.now().strftime('%H:%M:%S') + "-- Object detected")
+            print("")
+            while GPIO.input(sensor):
+                time.sleep(0.2)
+        else:
+            GPIO.output (buzzer, False)
+except KeyboardInterrupt:
+    GPIO.cleanup()
